@@ -74,23 +74,12 @@ fn main() -> Result<(), Box<dyn Error>> {
     ];
 
 
-    let mut executor: Box<dyn Runner> = if (splitted[0].contains("startplasma-wayland"))
-        || (splitted[0].contains("plasma-dbus-run-session-if-needed"))
-    {
-        println!("Using PlasmaRunner session executor");
-        Box::new(PlasmaRunner::new(splitted))
-    } else if splitted[0].contains("gamescope") {
-        println!("Using GamescopeExecveRunner session executor");
-        Box::new(GamescopeExecveRunner::new(
-            splitted,
+    let mut executor: Box<dyn Runner> = Box::new(GamescopeExecveRunner::new(
+            vec![],
             false,
             false,
             vec![],
-        ))
-    } else {
-        println!("Using ExecveRunner session executor");
-        Box::new(ExecveRunner::new(splitted))
-    };
+        ));
 
     executor.run()
 }
