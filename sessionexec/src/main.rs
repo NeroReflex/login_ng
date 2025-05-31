@@ -1,16 +1,6 @@
-#![no_main]
+
 use std::error::Error;
 
-#[cfg(test)]
-#[no_mangle]
-#[inline(never)]
-fn main() -> Result<(), Box<dyn Error>> {
-    Ok(())
-}
-
-#[cfg(not(test))]
-#[no_mangle]
-#[inline(never)]
 fn main() -> Result<(), Box<dyn Error>> {
     use sessionexec::execve::ExecveRunner;
     use sessionexec::gamescope::GamescopeExecveRunner;
@@ -83,9 +73,6 @@ fn main() -> Result<(), Box<dyn Error>> {
         String::from("-gamepadui"),
     ];
 
-    let environment = std::env::vars()
-        .map(|(key, val)| (key, val))
-        .collect::<Vec<_>>();
 
     let mut executor: Box<dyn Runner> = if (splitted[0].contains("startplasma-wayland"))
         || (splitted[0].contains("plasma-dbus-run-session-if-needed"))
@@ -98,7 +85,7 @@ fn main() -> Result<(), Box<dyn Error>> {
             splitted,
             false,
             false,
-            environment,
+            vec![],
         ))
     } else {
         println!("Using ExecveRunner session executor");
