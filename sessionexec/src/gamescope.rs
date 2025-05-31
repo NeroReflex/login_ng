@@ -215,17 +215,6 @@ impl GamescopeExecveRunner {
     }
 
     fn start_gamescope(&self) -> Result<(), Box<dyn std::error::Error>> {
-
-        print!("{} ", self.gamescope_cmd.as_str());
-        for p in self.gamescope_args.iter() {
-            print!("{p} ");
-        }
-
-        println!("");
-        for (key, val) in self.environment.iter() {
-            println!("{key}={val} ");
-        }
-
         let mut cmd = Command::new(self.gamescope_cmd.as_str());
         cmd.args(self.gamescope_args.iter());
         /*cmd.env_clear();
@@ -239,10 +228,7 @@ impl GamescopeExecveRunner {
 
 impl Runner for GamescopeExecveRunner {
     fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
-        let b = self.clone();
-        let gamescope_handle = spawn(move || b.start_gamescope().unwrap());
-
-        gamescope_handle.join().unwrap();
+        self.start_gamescope().unwrap();
 
         Ok(())
     }
