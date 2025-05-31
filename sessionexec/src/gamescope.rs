@@ -228,8 +228,8 @@ impl GamescopeExecveRunner {
 
         let mut cmd = Command::new(self.gamescope_cmd.as_str());
         cmd.args(self.gamescope_args.iter());
-        cmd.env_clear();
-        cmd.envs(self.environment.clone());
+        /*cmd.env_clear();
+        cmd.envs(self.environment.clone());*/
 
         cmd.spawn()?.wait_with_output()?;
 
@@ -239,19 +239,9 @@ impl GamescopeExecveRunner {
 
 impl Runner for GamescopeExecveRunner {
     fn run(&mut self) -> Result<(), Box<dyn std::error::Error>> {
-        let mangoapp_handle = match &self.socket {
-            Some(s) => {
-                let a = self.clone();
-                let s = s.clone();
-                spawn(move || a.start_mangoapp(s).unwrap())
-            }
-            None => spawn(move || {}),
-        };
-
         let b = self.clone();
         let gamescope_handle = spawn(move || b.start_gamescope().unwrap());
 
-        mangoapp_handle.join().unwrap();
         gamescope_handle.join().unwrap();
 
         Ok(())
