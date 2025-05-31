@@ -1,5 +1,6 @@
-use crate::{execve_wrapper, find_program_path, runner::Runner};
-use std::ffi::{CString, OsStr};
+use crate::execve_wrapper_cstr;
+use crate::{execve_wrapper, find_program_path, runner::Runner, cstr::CStr};
+use std::ffi::{OsStr};
 use std::io::{BufReader, Read};
 use std::{path::PathBuf, process::Command};
 
@@ -196,55 +197,53 @@ impl GamescopeExecveRunner {
             }
         };
 
-        let mut mangoapp_envp_data: Vec<CString> = vec![];
-        let mut mangoapp_argv_data: Vec<CString> = vec![];
+        let mut mangoapp_envp_data: Vec<CStr> = vec![];
+        let mut mangoapp_argv_data: Vec<CStr> = vec![];
         let mangoapp_prog = match find_program_path("mangoapp") {
-            Ok(program_path) => CString::new(program_path.as_str()).unwrap(),
+            Ok(program_path) => CStr::new(program_path.as_str()).unwrap(),
             Err(err) => {
                 println!("Error searching for the specified program: {err}");
-                CString::new("mangoapp").unwrap()
+                CStr::new("mangoapp").unwrap()
             }
         };
 
-        mangoapp_argv_data.push(mangoapp_prog.clone());
+        mangoapp_argv_data.push(CStr::new(mangoapp_prog.as_str()).unwrap());
 
         for (key, value) in std::env::vars() {
-            let env_var = format!("{}={}", key, value);
-            let c_string = CString::new(env_var).unwrap();
+            let c_string = CStr::new(format!("{key}={value}").as_str()).unwrap();
             mangoapp_envp_data.push(c_string);
         }
 
         for (key, val) in self.shared_env.iter() {
-            let env_var = format!("{}={}", key, val);
-            let c_string = CString::new(env_var).unwrap();
+            let c_string = CStr::new(format!("{key}={val}").as_str()).unwrap();
             mangoapp_envp_data.push(c_string);
         }
 
-        mangoapp_envp_data.push(CString::new(format!("DISPLAY={response_x_display}")).unwrap());
+        mangoapp_envp_data.push(CStr::new(format!("DISPLAY={response_x_display}").as_str()).unwrap());
         mangoapp_envp_data.push(
-            CString::new(format!("GAMESCOPE_WAYLAND_DISPLAY={response_wl_display}")).unwrap(),
+            CStr::new(format!("GAMESCOPE_WAYLAND_DISPLAY={response_wl_display}").as_str()).unwrap(),
         );
 
-        execve_wrapper(&mangoapp_prog, &mangoapp_argv_data, &mangoapp_envp_data)
+        execve_wrapper_cstr(&mangoapp_prog, &mangoapp_argv_data, &mangoapp_envp_data)
     }
 
     fn start_gamescope(&self) -> Result<(), Box<dyn std::error::Error>> {
-        let gamescope_prog = CString::new(self.gamescope_cmd.as_str()).unwrap();
+        let gamescope_prog = CStr::new(self.gamescope_cmd.as_str()).unwrap();
         let gamescope_argv_data = self
             .gamescope_args
             .iter()
-            .map(|argv| CString::new(argv.as_str()).unwrap())
+            .map(|argv| CStr::new(argv.as_str()).unwrap())
             .collect::<Vec<_>>();
-        let gamescope_envp_data: Vec<CString> = std::env::vars()
-            .map(|(key, value)| CString::new(format!("{key}={value}").as_str()).unwrap())
+        let gamescope_envp_data: Vec<CStr> = std::env::vars()
+            .map(|(key, value)| CStr::new(format!("{key}={value}").as_str()).unwrap())
             .chain(
                 self.shared_env
                     .iter()
-                    .map(|(key, val)| CString::new(format!("{key}={val}").as_str()).unwrap()),
+                    .map(|(key, val)| CStr::new(format!("{key}={val}").as_str()).unwrap()),
             )
             .collect::<Vec<_>>();
 
-        execve_wrapper(&gamescope_prog, &gamescope_argv_data, &gamescope_envp_data)
+        execve_wrapper_cstr(&gamescope_prog, &gamescope_argv_data, &gamescope_envp_data)
     }
 }
 
