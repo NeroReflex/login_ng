@@ -215,7 +215,7 @@ impl GamescopeExecveRunner {
     }
 
     fn start_gamescope(&self) -> Result<(), Box<dyn std::error::Error>> {
-        let mut cmd = Command::new(self.gamescope_cmd.as_str());
+        let mut cmd = Command::new("gamescope");
         cmd.args(self.gamescope_args.iter());
         /*cmd.env_clear();
         cmd.envs(self.environment.clone());*/
