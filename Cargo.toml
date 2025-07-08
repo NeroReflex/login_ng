@@ -9,12 +9,6 @@ license-file = "LICENSE.md"
 
 [lib]
 name = "login_ng"
-#crate-type = ["cdylib"]
-
-#[[lib]]
-#name = "your_cdylib"
-#crate-type = ["cdylib"]
-#path = "src/cdylib.rs"
 
 [[bin]]
 name = "login_ng-cli"
