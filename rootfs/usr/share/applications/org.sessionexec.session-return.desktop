@@ -1,7 +1,0 @@
-[Desktop Entry]
-Name=Game Mode
-Exec=bash /usr/lib/sessionexec/session-return.sh
-Icon=/usr/share/icons/sessionexec/return-to-game-mode.svg
-Terminal=false
-Type=Application
-StartupNotify=false

@@ -1,9 +1,0 @@
-{
-    "kind": "service",
-    "cmd": "sessionexec",
-    "args": [  ],
-    "stop_signal": "SIGTERM",
-    "max_restarts": 0,
-    "restart_delay_secs": 5,
-    "dependencies": [  ]
-}

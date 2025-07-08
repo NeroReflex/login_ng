@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=login_ng session
-Comment=login_ng session manager
-Exec=login_ng-session
-Type=Application
-DesktopNames=login_ng-session

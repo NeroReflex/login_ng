@@ -1,7 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=Steam Game Mode
-Comment=Steam Game Mode
-Exec=gamescope -e --steam -- steam -gamepadui -steamos3 -steampal -steamdeck
-Type=Application
-DesktopNames=gamescope

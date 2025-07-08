@@ -1,2 +1,0 @@
-#!/bin/sh
-dbus-launch login_ng-session

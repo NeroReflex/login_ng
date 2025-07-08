@@ -1,19 +1,91 @@
+[package]
+name = "login_ng"
+version = "0.6.17"
+description = "A set of software and utilities for managing every aspect of user login."
+homepage = "https://github.com/NeroReflex/login_ng"
+edition = "2021"
+authors = ["Denis Benato <benato.denis96@gmail.com>"]
+license-file = "LICENSE.md"
+
+[lib]
+name = "login_ng"
+#crate-type = ["cdylib"]
+
+#[[lib]]
+#name = "your_cdylib"
+#crate-type = ["cdylib"]
+#path = "src/cdylib.rs"
+
+[[bin]]
+name = "login_ng-cli"
+path = "src/bin/login_ng-cli.rs"
+
+[[bin]]
+name = "login_ng-ctl"
+path = "src/bin/login_ng-ctl.rs"
+
 [profile.release]
 lto = "fat"
-panic = "abort"
+# panic = "abort" # cargo-bitbake has problems with this
 opt-level = 'z'
 incremental = false
 codegen-units = 1
 
-[workspace]
-members = [
-    "login_ng",
-    "login_ng_user_interactions",
-    "pam_login_ng",
-    "login_ng-cli",
-    "login_ng-ctl",
-    "login_ng-gui",
-    "login_ng-session",
-    "sessionexec"
+[dependencies]
+users = "^0"
+thiserror = "^2"
+aes-gcm = "^0"
+bcrypt = "^0"
+hkdf = { version = "^0", features = [] }
+sha2 = "^0"
+xattr = "^1"
+bytevec2 = "^0"
+rs_sha512 = "^0"
+configparser = "^3" # interactions
+rpassword = "^7.3" # interactions
+argh = "^0" # cli utils
+chrono = "^0" # cli utils
+pam = { git = "https://github.com/NeroReflex/pam-rs.git", rev = "4d3da8a2b13fd9487bee12a81f4118a356312f0c" } # pam
+tokio = { version = "^1", features = ["macros", "time", "rt-multi-thread", "sync", "signal"] } # pam
+zbus = "^5" # pam
+rand = "0.8.5" # pam
+rsa = { version = "0.9.7", features = ["pem", "std", "u64_digit"] } # pam
+serde = { version = "^1", features = ["derive"] } # pam
+serde_json = "^1" # pam
+sys-mount = "^3" # pam
+
+# Conditional dependencies
+[features]
+default = [ "greetd" ]
+greetd = ["greetd_ipc", "nix"]
+pam = []
+
+# Optional dependencies
+[dependencies.greetd_ipc]
+version = "^0"
+features = ["sync-codec"]
+optional = true
+
+[dependencies.nix]
+version = "^0"
+optional = true
+
+[package.metadata.deb]
+license-file = ["LICENSE.md", "4"]
+extended-description = """\
+A command-line utility to login into a user accounts: \
+supports either greetd and pam."""
+depends = "$auto"
+section = "utility"
+priority = "optional"
+assets = [
+    # login_ng-cli
+    ["target/release/login_ng-cli", "usr/bin/", "755"],
+    ["rootfs/usr/lib/systemd/system/login_ng@.service", "usr/lib/systemd/system/", "644"],
+    ["rootfs/etc/pam.d/login_ng", "etc/pam.d/", "644"],
+    ["rootfs/etc/pam.d/login_ng-autologin", "etc/pam.d/", "644"],
+
+    # login_ng-ctl
+    ["target/release/login_ng-ctl", "usr/bin/", "755"],
+    ["rootfs/etc/pam.d/login_ng-ctl", "etc/pam.d/", "644"],
 ]
-resolver = "2"
