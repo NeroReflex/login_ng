@@ -21,7 +21,7 @@ install_login_ng-ctl: target/$(TARGET)/$(BUILD_TYPE)/login_ng-ctl
 install: install_login_ng-cli install_login_ng-ctl
 
 .PHONY: build
-build: fetch login_ng-gui/target/$(TARGET)/$(BUILD_TYPE)/login_ng-gui 
+build: target/$(TARGET)/$(BUILD_TYPE)/login_ng-cli target/$(TARGET)/$(BUILD_TYPE)/login_ng-ctl
 
 .PHONY: fetch
 fetch: Cargo.lock
