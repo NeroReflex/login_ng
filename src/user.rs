@@ -423,7 +423,7 @@ impl UserAuthData {
         &self.main
     }
 
-    pub fn secondary(&self) -> std::slice::Iter<SecondaryAuth> {
+    pub fn secondary(&self) -> std::slice::Iter<'_, SecondaryAuth> {
         self.auth.iter()
     }
 
