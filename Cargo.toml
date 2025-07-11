@@ -1,6 +1,6 @@
 [package]
 name = "login_ng"
-version = "0.7.5"
+version = "0.7.6"
 description = "A set of software and utilities for managing every aspect of user login."
 homepage = "https://github.com/NeroReflex/login_ng"
 edition = "2021"
