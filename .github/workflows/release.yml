@@ -51,6 +51,8 @@ jobs:
       run: pacman -S --noconfirm sudo curl
     - name: Install Build Dependencies
       run: pacman -S --noconfirm base-devel
+    - name: Install clang-sys Dependencies
+      run: pacman -S --noconfirm clang llvm lld
     - name: Install rustup
       run: pacman -S --noconfirm rustup
     - name: Set default rust toolchain
@@ -102,6 +104,8 @@ jobs:
       run: apt-get install -y sudo curl
     - name: Install Build Dependencies
       run: apt-get install -y build-essential devscripts debhelper pkg-config libpam0g-dev libssl-dev cargo zip
+    - name: Install clang-sys Dependencies
+      run: sudo apt-get install -y clang llvm lld libclang-dev
     - name: Install cargo-bitbake
       run: |
         cargo install cargo-bitbake --locked
@@ -152,6 +156,8 @@ jobs:
       run: apt-get install -y sudo curl
     - name: Install Build Dependencies
       run: apt-get install -y build-essential devscripts debhelper
+    - name: Install clang-sys Dependencies
+      run: apt-get install -y clang llvm lld libclang-dev
     - name: Install pam-sys Dependencies
       run: apt-get install -y libpam0g-dev
     - name: Install Rust toolchain
