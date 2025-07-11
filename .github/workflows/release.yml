@@ -113,7 +113,6 @@ jobs:
     - name: Build bitbake
       run: |
         mkdir bitbake
-        rm Cargo.lock
         cargo build
         /github/home/.cargo/bin/cargo-bitbake bitbake
         mv *.bb bitbake
