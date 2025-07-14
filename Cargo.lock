@@ -1037,8 +1037,8 @@ dependencies = [
 
 [[package]]
 name = "pam"
-version = "0.1.1"
-source = "git+https://github.com/NeroReflex/pam-rs.git?rev=668eef5be397993489cdeddce64ded072fb330ff#668eef5be397993489cdeddce64ded072fb330ff"
+version = "0.2.0"
+source = "git+https://github.com/NeroReflex/pam-rs.git?rev=df1af6e748da8b271bba06bb4f744b5ebd229815#df1af6e748da8b271bba06bb4f744b5ebd229815"
 dependencies = [
  "bitflags",
  "libc",
