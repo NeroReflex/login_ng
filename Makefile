@@ -8,6 +8,7 @@ install_login_ng-cli: target/$(TARGET)/$(BUILD_TYPE)/login_ng-cli
 	install -D -m 755 target/$(TARGET)/$(BUILD_TYPE)/login_ng-cli $(PREFIX)/usr/bin/login_ng-cli
 	install -D -m 644 rootfs/etc/pam.d/login_ng $(PREFIX)/$(ETC_DIR)/pam.d/login_ng
 	install -D -m 644 rootfs/etc/pam.d/login_ng-autologin $(PREFIX)/$(ETC_DIR)/pam.d/login_ng-autologin
+	install -D -m 644 rootfs/etc/pam.d/login_ng-ctl $(PREFIX)/$(ETC_DIR)/pam.d/login_ng-ctl
 	install -D -m 644 rootfs/usr/lib/systemd/system/login_ng@.service $(PREFIX)/usr/lib/systemd/system/login_ng@.service
 	install -D -m 644 rootfs/usr/lib/sysusers.d/login_ng.conf $(PREFIX)/usr/lib/sysusers.d/login_ng.conf
 	mkdir -p -m 644 $(PREFIX)/usr/lib/login_ng
