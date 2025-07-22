@@ -21,7 +21,7 @@
 use crate::interactions::login::LoginUserInteractionHandler;
 
 #[cfg(feature = "pam")]
-use pam::{conversation::ConversationHandler, error::ErrorCode};
+use pam::{conversation::ConversationHandler, error::PamErrorCode};
 
 #[cfg(feature = "pam")]
 use std::{
@@ -129,30 +129,30 @@ impl ProxyLoginUserInteractionHandlerConversation {
 
 #[cfg(feature = "pam")]
 impl ConversationHandler for ProxyLoginUserInteractionHandlerConversation {
-    fn prompt_echo_on(&mut self, msg: &CStr) -> Result<CString, ErrorCode> {
+    fn prompt_echo_on(&mut self, msg: &CStr) -> Result<CString, PamErrorCode> {
         let msg = format!("{}", msg.to_string_lossy());
 
-        let mut guard = self.inner.lock().map_err(|_| ErrorCode::CONV_ERR)?;
+        let mut guard = self.inner.lock().map_err(|_| PamErrorCode::CONV_ERR)?;
         match guard.prompt_plain(&msg) {
-            Some(response) => Ok(CString::new(response).map_err(|_err| ErrorCode::CONV_ERR)?),
-            None => Err(ErrorCode::CONV_ERR),
+            Some(response) => Ok(CString::new(response).map_err(|_err| PamErrorCode::CONV_ERR)?),
+            None => Err(PamErrorCode::CONV_ERR),
         }
     }
 
-    fn prompt_echo_off(&mut self, msg: &CStr) -> Result<CString, ErrorCode> {
+    fn prompt_echo_off(&mut self, msg: &CStr) -> Result<CString, PamErrorCode> {
         let msg = format!("{}", msg.to_string_lossy());
 
-        let mut guard = self.inner.lock().map_err(|_| ErrorCode::CONV_ERR)?;
+        let mut guard = self.inner.lock().map_err(|_| PamErrorCode::CONV_ERR)?;
         match guard.prompt_secret(&msg) {
-            Some(response) => Ok(CString::new(response).map_err(|_err| ErrorCode::CONV_ERR)?),
-            None => Err(ErrorCode::CONV_ERR),
+            Some(response) => Ok(CString::new(response).map_err(|_err| PamErrorCode::CONV_ERR)?),
+            None => Err(PamErrorCode::CONV_ERR),
         }
     }
 
     fn text_info(&mut self, msg: &CStr) {
         let msg = format!("{}", msg.to_string_lossy());
 
-        match self.inner.lock().map_err(|_| ErrorCode::CONV_ERR) {
+        match self.inner.lock().map_err(|_| PamErrorCode::CONV_ERR) {
             Ok(mut guard) => guard.print_info(&msg),
             Err(err) => eprintln!(
                 "had to info about '{}', but an error occurred: {:?}",
@@ -164,7 +164,7 @@ impl ConversationHandler for ProxyLoginUserInteractionHandlerConversation {
     fn error_msg(&mut self, msg: &CStr) {
         let msg = format!("{}", msg.to_string_lossy());
 
-        match self.inner.lock().map_err(|_| ErrorCode::CONV_ERR) {
+        match self.inner.lock().map_err(|_| PamErrorCode::CONV_ERR) {
             Ok(mut guard) => guard.print_error(&msg),
             Err(err) => eprintln!(
                 "had to info about '{}', but an error occurred: {:?}",

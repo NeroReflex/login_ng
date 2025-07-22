@@ -25,7 +25,7 @@ use std::{
 
 use crate::interactions::{prompt_password, prompt_plain};
 #[cfg(feature = "pam")]
-use pam::{error::ErrorCode, conversation::ConversationHandler};
+use pam::{error::PamErrorCode, conversation::ConversationHandler};
 
 use crate::interactions::{conversation::*, login::LoginUserInteractionHandler};
 
@@ -94,18 +94,18 @@ impl Default for CommandLineConversation {
 
 #[cfg(feature = "pam")]
 impl ConversationHandler for CommandLineConversation {
-    fn prompt_echo_on(&mut self, msg: &CStr) -> Result<CString, ErrorCode> {
+    fn prompt_echo_on(&mut self, msg: &CStr) -> Result<CString, PamErrorCode> {
         let prompt = format!("{}", msg.to_string_lossy());
 
         let response: String = match self.answerer {
             Some(ref ans) => match ans.lock() {
                 Ok(mut guard) => match guard.echo_on_prompt(&prompt) {
                     Some(answer) => answer,
-                    None => prompt_plain(prompt.as_str()).map_err(|_err| ErrorCode::CONV_ERR)?,
+                    None => prompt_plain(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
                 },
-                Err(_) => prompt_plain(prompt.as_str()).map_err(|_err| ErrorCode::CONV_ERR)?,
+                Err(_) => prompt_plain(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
             },
-            None => prompt_plain(prompt.as_str()).map_err(|_err| ErrorCode::CONV_ERR)?,
+            None => prompt_plain(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
         };
 
         if let Some(recorder) = &self.recorder {
@@ -114,21 +114,21 @@ impl ConversationHandler for CommandLineConversation {
             }
         }
 
-        Ok(CString::new(response).map_err(|_err| ErrorCode::CONV_ERR)?)
+        Ok(CString::new(response).map_err(|_err| PamErrorCode::CONV_ERR)?)
     }
 
-    fn prompt_echo_off(&mut self, msg: &CStr) -> Result<CString, ErrorCode> {
+    fn prompt_echo_off(&mut self, msg: &CStr) -> Result<CString, PamErrorCode> {
         let prompt = format!("{}", msg.to_string_lossy());
 
         let response: String = match self.answerer {
             Some(ref ans) => match ans.lock() {
                 Ok(mut guard) => match guard.echo_off_prompt(&prompt) {
                     Some(answer) => answer,
-                    None => prompt_password(prompt.as_str()).map_err(|_err| ErrorCode::CONV_ERR)?,
+                    None => prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
                 },
-                Err(_) => prompt_password(prompt.as_str()).map_err(|_err| ErrorCode::CONV_ERR)?,
+                Err(_) => prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
             },
-            None => prompt_password(prompt.as_str()).map_err(|_err| ErrorCode::CONV_ERR)?,
+            None => prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
         };
 
         if let Some(recorder) = &self.recorder {
@@ -137,7 +137,7 @@ impl ConversationHandler for CommandLineConversation {
             }
         }
 
-        Ok(CString::new(response).map_err(|_err| ErrorCode::CONV_ERR)?)
+        Ok(CString::new(response).map_err(|_err| PamErrorCode::CONV_ERR)?)
     }
 
     fn text_info(&mut self, msg: &CStr) {
