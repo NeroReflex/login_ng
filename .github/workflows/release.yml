@@ -198,4 +198,3 @@ jobs:
           files: |
             *.deb
             *.tar.bz2
-            *.zip
