@@ -39,7 +39,7 @@ configparser = "^3" # interactions
 rpassword = "^7.3" # interactions
 argh = "^0" # cli utils
 chrono = "^0" # cli utils
-pam = { git = "https://github.com/NeroReflex/pam-rs.git", rev = "37b533020a8cfbf4c1936fd12c7d400777d1e7b7" } # pam
+pam = { git = "https://github.com/NeroReflex/pam-rs.git", rev = "3fc342d2a110043c6e4bf52a00982cb605ec96c4" } # pam
 tokio = { version = "^1", features = ["macros", "time", "rt-multi-thread", "sync", "signal"] } # pam
 zbus = "^5" # pam
 rand = "0.8.5" # pam
