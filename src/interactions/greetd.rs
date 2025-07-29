@@ -106,11 +106,11 @@ impl LoginExecutor for GreetdLoginExecutor {
                         AuthMessageType::Visible => prompter.prompt_plain(&auth_message),
                         AuthMessageType::Secret => prompter.prompt_secret(&auth_message),
                         AuthMessageType::Info => {
-                            eprintln!("info: {}", auth_message);
+                            eprintln!("info: {auth_message}");
                             None
                         }
                         AuthMessageType::Error => {
-                            eprintln!("error: {}", auth_message);
+                            eprintln!("error: {auth_message}");
                             None
                         }
                     };

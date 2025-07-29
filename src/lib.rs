@@ -80,7 +80,6 @@ pub(crate) fn is_valid_password(password: &String) -> bool {
 
 pub fn valid_users() -> Vec<User> {
     unsafe { crate::users::all_users() }
-        .into_iter()
         .filter_map(|user| {
             if user.name() == "nobody" {
                 return None;

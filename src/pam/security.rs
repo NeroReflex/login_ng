@@ -78,7 +78,7 @@ fn split(combined: Vec<u8>) -> (Vec<u8>, Vec<u8>) {
     let mut data = Vec::new();
 
     for (i, &value) in combined.iter().enumerate() {
-        if i % 2 == 0 {
+        if i.is_multiple_of(2) {
             data.push(value);
         } else {
             otp.push(value);

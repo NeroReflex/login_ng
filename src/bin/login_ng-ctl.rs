@@ -427,7 +427,7 @@ fn main() {
                     None => println!("No default session set."),
                 },
                 Err(err) => {
-                    eprintln!("Error in reading the user default session: {}", err);
+                    eprintln!("Error in reading the user default session: {err}");
                     std::process::exit(-1)
                 }
             };
@@ -490,10 +490,7 @@ fn main() {
 
             if user_cfg.has_main() {
                 if let Err(err) = user_cfg.main_by_auth(&Some(intermediate_password.clone())) {
-                    eprintln!(
-                        "Could not verify the correctness of the intermediate key: {}",
-                        err
-                    );
+                    eprintln!("Could not verify the correctness of the intermediate key: {err}");
                     std::process::exit(-1)
                 }
             }
@@ -539,7 +536,7 @@ fn main() {
                             println!("Secondary password added.");
                         }
                         Err(err) => {
-                            eprintln!("Error adding a secondary password: {}.\nAborting.", err);
+                            eprintln!("Error adding a secondary password: {err}.\nAborting.");
                             std::process::exit(-1);
                         }
                     }

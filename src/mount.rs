@@ -135,6 +135,6 @@ impl MountPoints {
 
         let numeric_hash: u64 = hasher.finish();
 
-        format!("{:X}", numeric_hash)
+        format!("{numeric_hash:X}")
     }
 }

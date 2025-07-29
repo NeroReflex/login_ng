@@ -189,7 +189,7 @@ impl TryInto<SecondaryAuth> for AuthDataSerialized {
 fn homedir_by_username(username: &String) -> Result<OsString, StorageError> {
     let user = get_user_by_name(&username).ok_or(StorageError::UserDiscoveryError)?;
 
-    let systemd_homed_str: OsString = format!("/home/{}.homedir", username).into();
+    let systemd_homed_str: OsString = format!("/home/{username}.homedir").into();
     let systemd_homed_path = Path::new(systemd_homed_str.as_os_str());
 
     let home_dir_path = match systemd_homed_path.exists() {

@@ -193,12 +193,10 @@ pub(crate) fn mount_all(
 
                 if let Err(err) = set_directory_permissions(path, 0o700) {
                     eprintln!("❌ Error setting permissions of {path}: {err}");
+                } else if let Err(err) = change_owner(m.3.as_str(), uid, gid) {
+                    eprintln!("⚠️ Error changing owner of {path} to user '{username}': {err}");
                 } else {
-                    if let Err(err) = change_owner(m.3.as_str(), uid, gid) {
-                        eprintln!("⚠️ Error changing owner of {path} to user '{username}': {err}");
-                    } else {
-                        println!("🟢 Changed owner of {path} to user '{username}'");
-                    }
+                    println!("🟢 Changed owner of {path} to user '{username}'");
                 }
 
                 // Make the mount temporary, so that it will be unmounted on drop.

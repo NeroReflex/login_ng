@@ -55,11 +55,11 @@ impl ConversationPrompter for TrivialCommandLineConversationPrompter {
     }
 
     fn display_info(&mut self, prompt: &String) {
-        println!("{}", prompt)
+        println!("{prompt}")
     }
 
     fn display_error(&mut self, prompt: &String) {
-        eprintln!("{}", prompt)
+        eprintln!("{prompt}")
     }
 }
 
@@ -246,10 +246,10 @@ impl LoginUserInteractionHandler for CommandLineLoginUserInteractionHandler {
     }
 
     fn print_info(&mut self, msg: &String) {
-        println!("{}", msg)
+        println!("{msg}")
     }
 
     fn print_error(&mut self, msg: &String) {
-        eprintln!("{}", msg)
+        eprintln!("{msg}")
     }
 }

@@ -56,7 +56,7 @@ impl fmt::Display for ServiceOperationResult {
             ServiceOperationResult::IOError => "I/O Error",
             ServiceOperationResult::Unknown => "Unknown Error",
         };
-        write!(f, "{}", result_str)
+        write!(f, "{result_str}")
     }
 }
 
