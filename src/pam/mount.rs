@@ -126,7 +126,16 @@ pub(crate) fn mount_xdg(
         user_xdg_path.as_os_str(),
     );
     match mount(mount_data) {
-        Ok(mount) => Some(mount.into_unmount_drop(UnmountFlags::DETACH)),
+        Ok(mount) => {
+            let xdg_path = user_xdg_path.as_path().to_string_lossy().to_string();
+            if let Err(err) = set_directory_permissions(xdg_path.as_str(), 0o700) {
+                eprintln!("❌ Error setting permissions of the xdg directory {xdg_path}: {err}");
+            } else {
+                println!("🟢 Changed permissions of {xdg_path} to 0700");
+            }
+
+            Some(mount.into_unmount_drop(UnmountFlags::DETACH))
+        },
         Err(err) => {
             eprintln!(
                 "❌ Error mounting the xdg path for user {username} ({}): {err}",
