@@ -855,7 +855,7 @@ checksum = "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94"
 
 [[package]]
 name = "login_ng"
-version = "0.8.7"
+version = "0.8.8"
 dependencies = [
  "aes-gcm",
  "argh",
