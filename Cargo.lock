@@ -865,6 +865,7 @@ dependencies = [
  "configparser",
  "greetd_ipc",
  "hkdf",
+ "libc",
  "nix",
  "pam",
  "rand",

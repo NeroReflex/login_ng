@@ -19,7 +19,7 @@
 
 use std::{os::unix::process::CommandExt, path::Path, process::Command};
 
-use crate::pam_binding::context::{Flag, Context};
+use crate::pam_binding::context::{Context, Flag};
 
 use thiserror::Error;
 

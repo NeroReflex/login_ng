@@ -28,6 +28,7 @@ pub mod storage;
 pub mod user;
 
 pub extern crate aes_gcm;
+pub extern crate pam as pam_binding;
 pub extern crate rand;
 pub extern crate rs_sha512;
 pub extern crate rsa;
@@ -35,7 +36,6 @@ pub extern crate serde;
 pub extern crate serde_json;
 pub extern crate users;
 pub extern crate zbus;
-pub extern crate pam as pam_binding;
 
 #[cfg(test)]
 pub(crate) mod tests;

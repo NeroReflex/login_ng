@@ -25,7 +25,7 @@ use std::{
 
 use crate::interactions::{prompt_password, prompt_plain};
 #[cfg(feature = "pam")]
-use pam::{error::PamErrorCode, conversation::ConversationHandler};
+use pam::{conversation::ConversationHandler, error::PamErrorCode};
 
 use crate::interactions::{conversation::*, login::LoginUserInteractionHandler};
 
@@ -124,9 +124,13 @@ impl ConversationHandler for CommandLineConversation {
             Some(ref ans) => match ans.lock() {
                 Ok(mut guard) => match guard.echo_off_prompt(&prompt) {
                     Some(answer) => answer,
-                    None => prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
+                    None => {
+                        prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?
+                    }
                 },
-                Err(_) => prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
+                Err(_) => {
+                    prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?
+                }
             },
             None => prompt_password(prompt.as_str()).map_err(|_err| PamErrorCode::CONV_ERR)?,
         };
