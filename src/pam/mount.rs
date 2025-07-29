@@ -191,14 +191,6 @@ pub(crate) fn mount_all(
             Ok(mount) => {
                 println!("🟢 Mounted device {dev} into {path} for user '{username}'",);
 
-                if let Err(err) = set_directory_permissions(path, 0o700) {
-                    eprintln!("❌ Error setting permissions of {path}: {err}");
-                } else if let Err(err) = change_owner(m.3.as_str(), uid, gid) {
-                    eprintln!("⚠️ Error changing owner of {path} to user '{username}': {err}");
-                } else {
-                    println!("🟢 Changed owner of {path} to user '{username}'");
-                }
-
                 // Make the mount temporary, so that it will be unmounted on drop.
                 mounted_devices.push(mount.into_unmount_drop(UnmountFlags::DETACH));
             }
@@ -214,13 +206,21 @@ pub(crate) fn mount_all(
         mounts.mount().fstype().clone(),
         mounts.mount().flags().join(","),
         mounts.mount().device().clone(),
-        homedir,
+        homedir.clone(),
     )) {
         Ok(mount) => {
-            println!(
-                "🟢 Mounted device {} on home directory for user '{username}'",
-                mounts.mount().device().as_str(),
-            );
+            let dev = mounts.mount().device().clone();
+            let path = homedir.as_str();
+
+            println!("🟢 Mounted device {dev} on home directory for user '{username}'",);
+
+            if let Err(err) = set_directory_permissions(path, 0o700) {
+                eprintln!("❌ Error setting permissions of {path}: {err}");
+            } else if let Err(err) = change_owner(path, uid, gid) {
+                eprintln!("⚠️ Error changing owner of {path} to user '{username}': {err}");
+            } else {
+                println!("🟢 Changed owner of {path} to user '{username}'");
+            }
 
             // Make the mount temporary, so that it will be unmounted on drop.
             mounted_devices.push(mount.into_unmount_drop(UnmountFlags::DETACH));
